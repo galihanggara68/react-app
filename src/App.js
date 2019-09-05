@@ -5,14 +5,31 @@ import FormRegister from './components/register/FormRegister';
 
 // Nested Route, Parameter, Switch
 
+let barangs = [
+  {
+    id: "b1",
+    nama: "Sendal Swallow",
+    harga: 1000
+  },
+  {
+    id: "b2",
+    nama: "Sepatu Niike",
+    harga: 1000
+  },
+  {
+    id: "b3",
+    nama: "Tas Converse",
+    harga: 5000
+  }
+];
+
 class Barang extends React.Component{
   render(){
-    const {name, harga, stock} = this.props;
+    const {nama, harga} = this.props;
     return (
       <>
-        <h3>{name}</h3>
+        <h3>{nama}</h3>
         <p>{harga}</p>
-        <p>{stock}</p>
       </>
     );
   }
@@ -21,36 +38,22 @@ class Barang extends React.Component{
 const ListBarang = () => (
     <Router>
       <ul>
-        <li><Link to="/barang/b001">Sepatu</Link></li>
-        <li><Link to="/barang/shampoo">Shampoo</Link></li>
-        <li><Link to="/barang/sabun">Sabun</Link></li>
+        {barangs.map(barang => (
+          <li><Link to={`/barang/${barang.id}`}>{barang.nama}</Link></li>
+        ))}
       </ul>
 
-      <Route path="/barang/:name" component={DetailBarang} />
+      <Route path="/barang/:id" component={DetailBarang} />
     </Router>
 );
 
 const DetailBarang = ({match}) => {
-  switch(match.params.name){
-    case "b001":
-        return (
-          <>
-            <Barang name="Sepatu" harga="150000" stock="5" />
-          </>
-        );
-    case "shampoo":
-        return (
-          <>
-            <Barang name="Shampoo" harga="5000" stock="3" />
-          </>
-        );
-    case "sabun":
-        return (
-          <>
-            <Barang name="Sabun" harga="3000" stock="8" />
-          </>
-        );
-  }
+  const barang = barangs.find(b => b.id == match.params.id);
+  return (
+    <>
+      <Barang nama={barang.nama} harga={barang.harga} />
+    </>
+  );
 };
 
 function App() {
